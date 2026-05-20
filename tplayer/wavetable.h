@@ -10,6 +10,11 @@ public:
     ~wavetable();
 
     bool isValid() const;
+
+    ma_format getOutputFormat() const;
+    ma_uint32 getOutputChannels() const;
+    ma_uint32 getSampleRate() const;
+
     size_t read(void *out, ma_uint64 frames);
 
 private:

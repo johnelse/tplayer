@@ -30,6 +30,21 @@ bool wavetable::isValid() const
     return valid;
 }
 
+ma_format wavetable::getOutputFormat() const
+{
+    return decoder.outputFormat;
+}
+
+ma_uint32 wavetable::getOutputChannels() const
+{
+    return decoder.outputChannels;
+}
+
+ma_uint32 wavetable::getSampleRate() const
+{
+    return decoder.outputSampleRate;
+}
+
 size_t wavetable::read(void *out, ma_uint64 frames)
 {
     const ma_uint64 waveStart = currentWave * framesPerWave;
