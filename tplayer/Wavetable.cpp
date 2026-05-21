@@ -1,6 +1,6 @@
-#include "wavetable.h"
+#include "Wavetable.h"
 
-wavetable::wavetable(const std::string &path, ma_uint64 framesPerWave)
+Wavetable::Wavetable(const std::string &path, ma_uint64 framesPerWave)
     : framesPerWave(framesPerWave)
     , currentWave(0)
     , valid(false)
@@ -20,32 +20,32 @@ wavetable::wavetable(const std::string &path, ma_uint64 framesPerWave)
     valid = true;
 }
 
-wavetable::~wavetable()
+Wavetable::~Wavetable()
 {
     ma_decoder_uninit(&decoder);
 }
 
-bool wavetable::isValid() const
+bool Wavetable::isValid() const
 {
     return valid;
 }
 
-ma_format wavetable::getOutputFormat() const
+ma_format Wavetable::getOutputFormat() const
 {
     return decoder.outputFormat;
 }
 
-ma_uint32 wavetable::getOutputChannels() const
+ma_uint32 Wavetable::getOutputChannels() const
 {
     return decoder.outputChannels;
 }
 
-ma_uint32 wavetable::getSampleRate() const
+ma_uint32 Wavetable::getSampleRate() const
 {
     return decoder.outputSampleRate;
 }
 
-size_t wavetable::read(void *out, ma_uint64 frames)
+size_t Wavetable::read(void *out, ma_uint64 frames)
 {
     const ma_uint64 waveStart = currentWave * framesPerWave;
     const ma_uint64 waveEnd = waveStart + framesPerWave;

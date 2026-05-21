@@ -3,11 +3,11 @@
 #include <atomic>
 #include <string>
 
-class wavetable
+class Wavetable
 {
 public:
-    wavetable(const std::string &path, ma_uint64 framesPerWave);
-    ~wavetable();
+    Wavetable(const std::string &path, ma_uint64 framesPerWave);
+    ~Wavetable();
 
     bool isValid() const;
 
