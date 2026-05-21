@@ -1,10 +1,26 @@
+#include "Wavetable.h"
+#include "WavetablePlayer.h"
+
 #include <argparse/argparse.hpp>
 #include <miniaudio/miniaudio.h>
 
 #include <iostream>
+#include <memory>
 #include <stddef.h>
 
 static constexpr size_t DEFAULT_FRAMES = 2048;
+
+void playWavetable(const std::string &path, size_t frames)
+{
+    auto wavetable = std::make_shared<Wavetable>(path, frames);
+    WavetablePlayer player(wavetable);
+    player.start();
+
+    printf("Press any key to stop...");
+    getchar();
+
+    player.stop();
+}
 
 int main(int argc, char ** argv)
 {
@@ -30,6 +46,7 @@ int main(int argc, char ** argv)
 
     const std::string path = parser.get<std::string>("path");
     const size_t frames = parser.get<size_t>("frames");
+    playWavetable(path, frames);
 
     return 0;
 }
