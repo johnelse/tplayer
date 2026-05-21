@@ -42,3 +42,13 @@ bool WavetablePlayer::isValid() const
 {
     return valid;
 }
+
+bool WavetablePlayer::start()
+{
+    return (ma_device_start(&device) == MA_SUCCESS);
+}
+
+bool WavetablePlayer::stop()
+{
+    return (ma_device_stop(&device) == MA_SUCCESS);
+}

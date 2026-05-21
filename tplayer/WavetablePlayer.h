@@ -12,6 +12,9 @@ public:
 
     bool isValid() const;
 
+    bool start();
+    bool stop();
+
 private:
     std::shared_ptr<Wavetable> wavetable;
     bool valid;
