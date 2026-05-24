@@ -47,21 +47,27 @@ size_t Wavetable::read(void *out, ma_uint64 frames)
 {
     const ma_uint64 waveStart = currentWave * framesPerWave;
     const ma_uint64 waveEnd = waveStart + framesPerWave;
-    ma_uint64 cursor, framesToRead, read = 0;
+    ma_uint64 cursor, framesToRead, read = 0, readThisIteration = 0;
 
-    if (ma_decoder_get_cursor_in_pcm_frames(&decoder, &cursor) != MA_SUCCESS)
-        return read;
-
-    if (cursor >= waveEnd)
+    while (read < frames)
     {
-        if (ma_decoder_seek_to_pcm_frame(&decoder, waveStart) != MA_SUCCESS)
+        if (ma_decoder_get_cursor_in_pcm_frames(&decoder, &cursor) != MA_SUCCESS)
             return read;
 
-        cursor = waveStart;
-    }
+        if (cursor < waveStart || cursor >= waveEnd)
+        {
+            if (ma_decoder_seek_to_pcm_frame(&decoder, waveStart) != MA_SUCCESS)
+                return read;
 
-    framesToRead = waveEnd - cursor;
-    ma_decoder_read_pcm_frames(&decoder, out, framesToRead, &read);
+            cursor = waveStart;
+        }
+
+        framesToRead = std::min(waveEnd - cursor, frames - read);
+        ma_decoder_read_pcm_frames(&decoder, out, framesToRead, &readThisIteration);
+        out = (ma_uint8*)(out) + readThisIteration * ma_get_bytes_per_frame(decoder.outputFormat, decoder.outputChannels);
+
+        read += readThisIteration;
+    }
 
     return read;
 }
